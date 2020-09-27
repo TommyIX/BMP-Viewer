@@ -12,4 +12,3 @@ Dialog::~Dialog()
 {
     delete ui;
 }
-
