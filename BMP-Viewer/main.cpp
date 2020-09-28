@@ -1,9 +1,10 @@
-#include "dialog.h"
-#include <math.h>
-#include <string>
+#include "bmpdisplay.h"
+#include "bmpinfo.h"
 #include <QApplication>
 #include <QException>
 #include <QMenuBar>
+#include <math.h>
+#include <string>
 #include <iostream>
 #include <sstream>
 #include <fstream>
@@ -18,7 +19,6 @@ void BMPRead(string);
 void CharReverse(unsigned char*, int);
 long long HexChartoint(unsigned char*, int);
 void byteflowreadint(std::ifstream*,int,int*);
-void PaintBMP(Dialog*);
 
 //常量表
 const char hex[16] = { '0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F' };
@@ -45,20 +45,15 @@ struct RGBA{
 RGBA* ColorTable;
 RGBA* ColorData;
 
-int main(int argc, char *argv[]){ //QT窗口生成
+int main(int argc, char *argv[])
+{
     QApplication a(argc, argv);
-    Dialog w;
-    BMPRead("C:\\Users\\jhong\\Desktop\\bmp.bmp");
-    if(Targethead.successfullyopened) w.setFixedSize(Targetinfo.width,Targetinfo.height);
-
+    BMPDisplay w;
+    bmpinfo inf;
+    BMPRead("C:\\Users\\JHong\\Desktop\\testbmp\\default\\bmp.bmp");
     w.show();
+    if(Targethead.successfullyopened) inf.show();
     return a.exec();
-}
-
-void PaintBMP(Dialog* wpnt){
-    for(int i=0;i<Targetinfo.height;i++){
-
-    }
 }
 
 void BMPRead(string source){ //BMP解码器
@@ -104,84 +99,6 @@ void BMPRead(string source){ //BMP解码器
     CharReverse(thishead,4);
     if(HexChartoint(thishead,4)!=40) {qDebug("Only Support BMP File with V3 header");return;}
     delete thishead;
-/*
-    thishead = new unsigned char[4]; //读入width
-    for(int i=0;i<4;i++){
-        bmpin>>*(thishead+i);
-    }
-    CharReverse(thishead,4);
-    Targetinfo.width=HexChartoint(thishead,4);
-    delete thishead;
-
-    thishead = new unsigned char[4]; //读入height
-    for(int i=0;i<4;i++){
-        bmpin>>*(thishead+i);
-    }
-    CharReverse(thishead,4);
-    Targetinfo.height=HexChartoint(thishead,4);
-    delete thishead;
-
-    thishead = new unsigned char[2]; //去掉固定的0x0001
-    for(int i=0;i<2;i++){
-        bmpin>>*(thishead+i);
-    }
-    delete thishead;
-
-    thishead = new unsigned char[2]; //读入像素所占颜色数
-    for(int i=0;i<2;i++){
-        bmpin>>*(thishead+i);
-    }
-    CharReverse(thishead,2);
-    Targetinfo.pixelbit=HexChartoint(thishead,2);
-    delete thishead;
-
-    thishead = new unsigned char[4]; //读入压缩率
-    for(int i=0;i<4;i++){
-        bmpin>>*(thishead+i);
-    }
-    CharReverse(thishead,4);
-    Targetinfo.compassrate=HexChartoint(thishead,4);
-    delete thishead;
-
-    thishead = new unsigned char[4]; //读入图像的大小(BI_RGB下为0)
-    for(int i=0;i<4;i++){
-        bmpin>>*(thishead+i);
-    }
-    CharReverse(thishead,4);
-    Targetinfo.size=HexChartoint(thishead,4);
-    delete thishead;
-
-    thishead = new unsigned char[4]; //读入水平分辨率
-    for(int i=0;i<4;i++){
-        bmpin>>*(thishead+i);
-    }
-    CharReverse(thishead,4);
-    Targetinfo.horizontalresolution=HexChartoint(thishead,4);
-    delete thishead;
-
-    thishead = new unsigned char[4]; //读入垂直分辨率
-    for(int i=0;i<4;i++){
-        bmpin>>*(thishead+i);
-    }
-    CharReverse(thishead,4);
-    Targetinfo.verticalresolution=HexChartoint(thishead,4);
-    delete thishead;
-
-    thishead = new unsigned char[4]; //读入实际颜色
-    for(int i=0;i<4;i++){
-        bmpin>>*(thishead+i);
-    }
-    CharReverse(thishead,4);
-    Targetinfo.acturalcolorindex=HexChartoint(thishead,4);
-    delete thishead;
-
-    thishead = new unsigned char[4]; //读入关键颜色
-    for(int i=0;i<4;i++){
-        bmpin>>*(thishead+i);
-    }
-    CharReverse(thishead,4);
-    Targetinfo.importantcolorindex=HexChartoint(thishead,4);
-    delete thishead;*/
 
     //BMP文件信息读取部分
     byteflowreadint(&bmpin,4,&Targetinfo.width); //读入宽度
@@ -260,4 +177,10 @@ long long HexChartoint(unsigned char* target, int length) { //注意：为HexCha
     }
     return output;
 }
-//next
+
+template <class M>
+string numtostr(M numtop){
+    std::stringstream ss;
+    ss<<numtop;
+    return ss.str();
+}
