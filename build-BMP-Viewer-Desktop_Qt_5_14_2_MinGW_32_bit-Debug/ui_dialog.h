@@ -23,8 +23,8 @@ public:
     {
         if (Dialog->objectName().isEmpty())
             Dialog->setObjectName(QString::fromUtf8("Dialog"));
-        Dialog->resize(847, 601);
-        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        Dialog->resize(800, 800);
+        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(Dialog->sizePolicy().hasHeightForWidth());

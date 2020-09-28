@@ -18,17 +18,19 @@ void BMPRead(string);
 void CharReverse(unsigned char*, int);
 long long HexChartoint(unsigned char*, int);
 void byteflowreadint(std::ifstream*,int,int*);
+void PaintBMP(Dialog*);
 
 //常量表
 const char hex[16] = { '0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F' };
 
 struct BMPfilehead{ //第一部分数据：BMP文件头
+    bool successfullyopened=false;
     long long sizebyte;//文件大小变量
     long long shiftbyte;//偏移量
 }Targethead;
 struct BMPinformation{ //第二部分数据：位图信息
-    int width;
-    int height;
+    int width=100;
+    int height=100;
     int pixelbit;
     int compassrate; //8位，若为0则不压缩
     int size;
@@ -46,8 +48,17 @@ RGBA* ColorData;
 int main(int argc, char *argv[]){ //QT窗口生成
     QApplication a(argc, argv);
     Dialog w;
+    BMPRead("C:\\Users\\jhong\\Desktop\\bmp.bmp");
+    if(Targethead.successfullyopened) w.setFixedSize(Targetinfo.width,Targetinfo.height);
+
     w.show();
     return a.exec();
+}
+
+void PaintBMP(Dialog* wpnt){
+    for(int i=0;i<Targetinfo.height;i++){
+
+    }
 }
 
 void BMPRead(string source){ //BMP解码器
@@ -207,6 +218,7 @@ void BMPRead(string source){ //BMP解码器
         bmpin >> temp;
         (ColorData + i)->R = int(temp);
      }
+     Targethead.successfullyopened=true;
 }
 void byteflowreadint(std::ifstream* source,int length,int* savelocation){
     unsigned char* temp = (unsigned char*)malloc(length*sizeof(unsigned char));
