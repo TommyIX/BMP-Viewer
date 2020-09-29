@@ -12,6 +12,7 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
@@ -27,6 +28,7 @@ public:
     QAction *action_4;
     QAction *action_5;
     QWidget *centralwidget;
+    QLabel *label;
     QMenuBar *menubar;
     QMenu *menu;
     QMenu *menu_2;
@@ -51,6 +53,10 @@ public:
         action_5->setObjectName(QString::fromUtf8("action_5"));
         centralwidget = new QWidget(BMPDisplay);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
+        label = new QLabel(centralwidget);
+        label->setObjectName(QString::fromUtf8("label"));
+        label->setGeometry(QRect(0, 0, 1016, 1017));
+        label->setAlignment(Qt::AlignCenter);
         BMPDisplay->setCentralWidget(centralwidget);
         menubar = new QMenuBar(BMPDisplay);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -83,6 +89,7 @@ public:
         action_2->setText(QCoreApplication::translate("BMPDisplay", "\346\211\223\345\274\200", nullptr));
         action_4->setText(QCoreApplication::translate("BMPDisplay", "\351\200\200\345\207\272", nullptr));
         action_5->setText(QCoreApplication::translate("BMPDisplay", "\345\205\263\344\272\216", nullptr));
+        label->setText(QCoreApplication::translate("BMPDisplay", "TextLabel", nullptr));
         menu->setTitle(QCoreApplication::translate("BMPDisplay", "\346\226\207\344\273\266", nullptr));
         menu_2->setTitle(QCoreApplication::translate("BMPDisplay", "\345\205\263\344\272\216", nullptr));
     } // retranslateUi

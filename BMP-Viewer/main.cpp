@@ -7,21 +7,23 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     BMPDisplay w;
     bmpinfo inf;
-    BMPRead("C:\\Users\\JHong\\Desktop\\testbmp\\default\\bmp.bmp");
+    BMPRead("C:\\Users\\JHong\\Desktop\\testbmp\\default\\head.bmp");
     w.setFixedSize(QSize(Targetinfo.width,Targetinfo.height));
+    //for(int i=1;i<=300;i++){w.paintpixel(100,100,100,100,100,i);}
+
     /*
     if(Targethead.successfullyopened){
         for(int j=Targetinfo.height;j>=0;j--){
             for(int i=1;i<=Targetinfo.width;i++){
                 RGBA temp = *(ColorData+(j-1)*Targetinfo.width+i);
-                w.paintwith(temp.R,temp.G,temp.B,0,i,j);
+                w.paintpixel(temp.R,temp.G,temp.B,0,i,j);
             }
         }
-    }
-    */
+    }*/
+
     w.show();
     if(Targethead.successfullyopened){
-        string wtw[12];
+        string wtw[75];
         wtw[0]="文件大小："+numtostr(Targethead.sizebyte)+"Bytes";
         wtw[1]="文件偏移量："+numtostr(Targethead.shiftbyte)+"Bytes";
         wtw[2]="图像宽度："+numtostr(Targetinfo.width)+"Pixels";
@@ -33,6 +35,9 @@ int main(int argc, char *argv[])
         wtw[8]="图像垂直分辨率："+numtostr(Targetinfo.verticalresolution)+"Pixels/metre";
         wtw[9]="图像实际颜色索引："+numtostr(Targetinfo.acturalcolorindex);
         wtw[10]="图像重要颜色索引："+numtostr(Targetinfo.importantcolorindex);
+        for(int i=0;i<50;i++){
+            wtw[11+i] = "("+numtostr((ColorData+i)->R)+","+numtostr((ColorData+i)->G)+","+numtostr((ColorData+i)->B)+")";
+        }
         inf.bmpinfoprint(wtw);
     }
     inf.show();
@@ -47,14 +52,14 @@ void BMPRead(string source){ //BMP解码器
     //文件头读取与检查部分
     thishead = new unsigned char[2]; //读入前两位判断是否为BMP文件头
     for(int i=0;i<2;i++){
-        bmpin>>*(thishead+i);
+        *(thishead+i)=bmpin.get();
     }
     if (*thishead!='B'||*(thishead+1)!='M') {qDebug("Not a BMP file!");return;}
     delete thishead;
 
     thishead = new unsigned char[4]; //读入文件大小
     for(int i=0;i<4;i++){
-        bmpin>>*(thishead+i);
+        *(thishead+i)=bmpin.get();
     }
     CharReverse(thishead,4);
     Targethead.sizebyte=HexChartoint(thishead,4);
@@ -62,14 +67,14 @@ void BMPRead(string source){ //BMP解码器
 
     thishead = new unsigned char[4]; //检查保留段完整性
     for(int i=0;i<4;i++){
-        bmpin>>*(thishead+i);
+        *(thishead+i)=bmpin.get();
         if (*(thishead+i)!=0) {qDebug("Reserve part ERROR");return;}
     }
     delete thishead;
 
     thishead = new unsigned char[4]; //读入偏移距离
     for(int i=0;i<4;i++){
-        bmpin>>*(thishead+i);
+        *(thishead+i)=bmpin.get();
     }
     CharReverse(thishead,4);
     Targethead.shiftbyte=HexChartoint(thishead,4);
@@ -77,7 +82,7 @@ void BMPRead(string source){ //BMP解码器
 
     thishead = new unsigned char[4]; //检查位图信息头大小是否为40
     for(int i=0;i<4;i++){
-        bmpin>>*(thishead+i);
+        *(thishead+i)=bmpin.get();
     }
     CharReverse(thishead,4);
     if(HexChartoint(thishead,4)!=40) {qDebug("Only Support BMP File with V3 header");return;}
@@ -90,10 +95,8 @@ void BMPRead(string source){ //BMP解码器
     byteflowreadint(&bmpin,2,&Targetinfo.pixelbit);//读入像素所占比特数
     byteflowreadint(&bmpin,4,&Targetinfo.compassrate);//读入压缩率，0为BI_RGB
     byteflowreadint(&bmpin,4,&Targetinfo.size);//读入图像大小
-    byteflowreadint(&bmpin,2,&Targetinfo.horizontalresolution);//读入水平分辨率
-    byteflowreadint(&bmpin,2,NULL);//抛弃为1的值
-    byteflowreadint(&bmpin,2,&Targetinfo.verticalresolution);//读入垂直分辨率
-    byteflowreadint(&bmpin,2,NULL);//抛弃为1的值
+    byteflowreadint(&bmpin,4,&Targetinfo.horizontalresolution);//读入水平分辨率
+    byteflowreadint(&bmpin,4,&Targetinfo.verticalresolution);//读入垂直分辨率
     byteflowreadint(&bmpin,4,&Targetinfo.acturalcolorindex);//读入实际颜色索引数
     byteflowreadint(&bmpin,4,&Targetinfo.importantcolorindex);//读入重要颜色索引数
 
@@ -125,7 +128,7 @@ void BMPRead(string source){ //BMP解码器
 void byteflowreadint(std::ifstream* source,int length,int* savelocation){
     unsigned char* temp = (unsigned char*)malloc(length*sizeof(unsigned char));
     for(int i=0;i<length;i++){
-        *source>>*(temp+i);
+        *(temp+i)=source->get();
     }
     CharReverse(temp,length);
     if(savelocation!=NULL)*savelocation=HexChartoint(temp,length);
@@ -151,6 +154,7 @@ long long HexChartoint(unsigned char* target, int length) { //注意：为HexCha
     }
     int powwhat = length * 2 - 1;
     long long output = 0;
+
     for (int i = 0; i < 2 * length; i++) {
         if (toconverthex[i] >= 'A' && toconverthex[i] <= 'F') {
             output += (int(toconverthex[i]) - int('A') + 10) * pow(16, powwhat);
