@@ -20,6 +20,7 @@ public:
     //BMPDisplay(QWidget *parent = nullptr);
     ~BMPDisplay();
     void paintEvent(QPaintEvent *);
+    void paintpixel(int,int,int,int,int,int);
 
 private:
     Ui::BMPDisplay *ui;
