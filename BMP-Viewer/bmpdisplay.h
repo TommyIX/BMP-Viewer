@@ -2,6 +2,10 @@
 #define BMPDISPLAY_H
 
 #include <QMainWindow>
+#include <QPainter>
+#include <QWidget>
+#include <QLabel>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class BMPDisplay; }
@@ -12,8 +16,10 @@ class BMPDisplay : public QMainWindow
     Q_OBJECT
 
 public:
-    BMPDisplay(QWidget *parent = nullptr);
+    explicit BMPDisplay(QWidget *parent = 0);
+    //BMPDisplay(QWidget *parent = nullptr);
     ~BMPDisplay();
+    void paintEvent(QPaintEvent *);
 
 private:
     Ui::BMPDisplay *ui;

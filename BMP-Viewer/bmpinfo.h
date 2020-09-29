@@ -1,6 +1,7 @@
 #ifndef BMPINFO_H
 #define BMPINFO_H
 
+#include <string>
 #include <QDialog>
 
 namespace Ui {
@@ -14,6 +15,7 @@ class bmpinfo : public QDialog
 public:
     explicit bmpinfo(QWidget *parent = nullptr);
     ~bmpinfo();
+    void bmpinfoprint(std::string*);
 
 private:
     Ui::bmpinfo *ui;

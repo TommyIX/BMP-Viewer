@@ -25,10 +25,14 @@ public:
     {
         if (bmpinfo->objectName().isEmpty())
             bmpinfo->setObjectName(QString::fromUtf8("bmpinfo"));
-        bmpinfo->resize(400, 350);
+        bmpinfo->resize(552, 527);
+        bmpinfo->setMinimumSize(QSize(552, 527));
+        bmpinfo->setMaximumSize(QSize(1000, 1000));
         listView = new QListView(bmpinfo);
         listView->setObjectName(QString::fromUtf8("listView"));
-        listView->setGeometry(QRect(0, 10, 251, 341));
+        listView->setGeometry(QRect(0, 0, 551, 341));
+        listView->setMinimumSize(QSize(0, 0));
+        listView->setMaximumSize(QSize(1000, 1000));
 
         retranslateUi(bmpinfo);
 
@@ -37,7 +41,7 @@ public:
 
     void retranslateUi(QDialog *bmpinfo)
     {
-        bmpinfo->setWindowTitle(QCoreApplication::translate("bmpinfo", "Dialog", nullptr));
+        bmpinfo->setWindowTitle(QCoreApplication::translate("bmpinfo", "Fileinfo", nullptr));
     } // retranslateUi
 
 };

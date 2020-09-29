@@ -1,49 +1,6 @@
 #include "bmpdisplay.h"
 #include "bmpinfo.h"
-#include <QApplication>
-#include <QException>
-#include <QMenuBar>
-#include <math.h>
-#include <string>
-#include <iostream>
-#include <sstream>
-#include <fstream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/stat.h>
-#include <windows.h>
-using std::string;
-
-//函数定义表
-void BMPRead(string);
-void CharReverse(unsigned char*, int);
-long long HexChartoint(unsigned char*, int);
-void byteflowreadint(std::ifstream*,int,int*);
-
-//常量表
-const char hex[16] = { '0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F' };
-
-struct BMPfilehead{ //第一部分数据：BMP文件头
-    bool successfullyopened=false;
-    long long sizebyte;//文件大小变量
-    long long shiftbyte;//偏移量
-}Targethead;
-struct BMPinformation{ //第二部分数据：位图信息
-    int width=100;
-    int height=100;
-    int pixelbit;
-    int compassrate; //8位，若为0则不压缩
-    int size;
-    int horizontalresolution; //水平分辨率
-    int verticalresolution; //垂直分辨率
-    int acturalcolorindex;
-    int importantcolorindex;
-}Targetinfo;
-struct RGBA{
-    int R,G,B,A;
-};
-RGBA* ColorTable;
-RGBA* ColorData;
+#include "main.h"
 
 int main(int argc, char *argv[])
 {
@@ -51,8 +8,34 @@ int main(int argc, char *argv[])
     BMPDisplay w;
     bmpinfo inf;
     BMPRead("C:\\Users\\JHong\\Desktop\\testbmp\\default\\bmp.bmp");
+    w.setFixedSize(QSize(Targetinfo.width,Targetinfo.height));
+    /*
+    if(Targethead.successfullyopened){
+        for(int j=Targetinfo.height;j>=0;j--){
+            for(int i=1;i<=Targetinfo.width;i++){
+                RGBA temp = *(ColorData+(j-1)*Targetinfo.width+i);
+                w.paintwith(temp.R,temp.G,temp.B,0,i,j);
+            }
+        }
+    }
+    */
     w.show();
-    if(Targethead.successfullyopened) inf.show();
+    if(Targethead.successfullyopened){
+        string wtw[12];
+        wtw[0]="文件大小："+numtostr(Targethead.sizebyte)+"Bytes";
+        wtw[1]="文件偏移量："+numtostr(Targethead.shiftbyte)+"Bytes";
+        wtw[2]="图像宽度："+numtostr(Targetinfo.width)+"Pixels";
+        wtw[3]="图像高度："+numtostr(Targetinfo.height)+"Pixels";
+        wtw[4]="图像位宽："+numtostr(Targetinfo.pixelbit);
+        wtw[5]="图像压缩率："+numtostr(Targetinfo.compassrate);
+        wtw[6]="图像bi_size："+numtostr(Targetinfo.size);
+        wtw[7]="图像水平分辨率："+numtostr(Targetinfo.horizontalresolution)+"Pixels/metre";
+        wtw[8]="图像垂直分辨率："+numtostr(Targetinfo.verticalresolution)+"Pixels/metre";
+        wtw[9]="图像实际颜色索引："+numtostr(Targetinfo.acturalcolorindex);
+        wtw[10]="图像重要颜色索引："+numtostr(Targetinfo.importantcolorindex);
+        inf.bmpinfoprint(wtw);
+    }
+    inf.show();
     return a.exec();
 }
 
@@ -107,8 +90,10 @@ void BMPRead(string source){ //BMP解码器
     byteflowreadint(&bmpin,2,&Targetinfo.pixelbit);//读入像素所占比特数
     byteflowreadint(&bmpin,4,&Targetinfo.compassrate);//读入压缩率，0为BI_RGB
     byteflowreadint(&bmpin,4,&Targetinfo.size);//读入图像大小
-    byteflowreadint(&bmpin,4,&Targetinfo.horizontalresolution);//读入水平分辨率
-    byteflowreadint(&bmpin,4,&Targetinfo.verticalresolution);//读入垂直分辨率
+    byteflowreadint(&bmpin,2,&Targetinfo.horizontalresolution);//读入水平分辨率
+    byteflowreadint(&bmpin,2,NULL);//抛弃为1的值
+    byteflowreadint(&bmpin,2,&Targetinfo.verticalresolution);//读入垂直分辨率
+    byteflowreadint(&bmpin,2,NULL);//抛弃为1的值
     byteflowreadint(&bmpin,4,&Targetinfo.acturalcolorindex);//读入实际颜色索引数
     byteflowreadint(&bmpin,4,&Targetinfo.importantcolorindex);//读入重要颜色索引数
 
@@ -176,11 +161,4 @@ long long HexChartoint(unsigned char* target, int length) { //注意：为HexCha
         powwhat--;
     }
     return output;
-}
-
-template <class M>
-string numtostr(M numtop){
-    std::stringstream ss;
-    ss<<numtop;
-    return ss.str();
 }
