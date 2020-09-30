@@ -16,17 +16,12 @@ BMPDisplay::~BMPDisplay()
 
 void BMPDisplay::paintEvent(QPaintEvent *) {
     QPainter painter(this); // this 是 PaintTest 的指针
-    painter.drawRect(100, 100, 50, 50);
+    QPen pen;
+    //QPixmap tempPixmap = QPixmap::fromImage(imagesource);
+    //painter.drawPixmap(0,0,tempPixmap);
     return;
 }
 
-
-/*void BMPDisplay::paintpixel(int r, int g, int b, int a, int x, int y){
-    painter.
-    thiscolor.setRed(r);
-    thiscolor.setGreen(g);
-    thiscolor.setBlue(b);
-    thiscolor.setAlpha(a);
-    painter.drawPoint(x,y);
+void BMPDisplay::importpaintimage(QImage& source){
+    //imagesource=source;
 }
-*/

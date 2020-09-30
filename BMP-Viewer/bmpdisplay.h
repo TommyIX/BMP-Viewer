@@ -18,10 +18,11 @@ public:
     explicit BMPDisplay(QWidget *parent = 0);
     ~BMPDisplay();
     void paintEvent(QPaintEvent *);
+    void importpaintimage(QImage&);
     //void paintpixel(int,int,int,int,int,int);
 
 private:
     Ui::BMPDisplay *ui;
-
+    QImage imagesource;
 };
 #endif // BMPDISPLAY_H

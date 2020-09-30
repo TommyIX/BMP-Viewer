@@ -7,11 +7,10 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     BMPDisplay w;
     bmpinfo inf;
-    BMPRead("C:\\Users\\JHong\\Desktop\\testbmp\\default\\head.bmp");
+    BMPRead("C:\\Users\\jhong\\Desktop\\testbmp\\default\\minihead.bmp");
     w.setFixedSize(QSize(Targetinfo.width,Targetinfo.height));
-    //for(int i=1;i<=300;i++){w.paintpixel(100,100,100,100,100,i);}
-
     /*
+    for(int i=1;i<=300;i++){w.paintpixel(100,100,100,100,100,i);}
     if(Targethead.successfullyopened){
         for(int j=Targetinfo.height;j>=0;j--){
             for(int i=1;i<=Targetinfo.width;i++){
@@ -21,6 +20,20 @@ int main(int argc, char *argv[])
         }
     }*/
 
+    //这里有问题，当RGBA结构指针过大
+    /*QImage todisplayBMP(Targetinfo.width,Targetinfo.height, QImage::Format_RGB32);
+    QColor colortemp;
+    for(int j=(Targetinfo.height-10);j>=0;j--){
+        for(int i=1;i<=(Targetinfo.width-10);i++){
+            RGBA temp = *(ColorData+i+j*64);
+            colortemp.setRed(temp.R);
+            colortemp.setGreen(temp.G);
+            colortemp.setBlue(temp.B);
+            colortemp.setAlpha(temp.A);
+            todisplayBMP.setPixelColor(i,j,colortemp);
+        }
+    }
+    w.importpaintimage(todisplayBMP);*/
     w.show();
     if(Targethead.successfullyopened){
         string wtw[75];

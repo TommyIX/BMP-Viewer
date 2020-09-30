@@ -41,7 +41,7 @@ struct BMPinformation{ //第二部分数据：位图信息
     int importantcolorindex;
 }Targetinfo;
 struct RGBA{
-    int R,G,B,A;
+    int R,G,B,A=255;
 };
 RGBA* ColorTable;
 RGBA* ColorData;
