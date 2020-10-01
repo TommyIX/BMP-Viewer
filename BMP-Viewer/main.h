@@ -40,11 +40,15 @@ struct BMPinformation{ //第二部分数据：位图信息
     int acturalcolorindex;
     int importantcolorindex;
 }Targetinfo;
-struct RGBA{
+int *RTable,*GTable,*BTable,*ATable;
+int *RData,*GData,*BData,*AData;
+
+
+/*struct RGBA{
     int R,G,B,A=255;
 };
 RGBA* ColorTable;
-RGBA* ColorData;
+RGBA* ColorData;*/
 
 template <class M>
 string numtostr(M numtop){

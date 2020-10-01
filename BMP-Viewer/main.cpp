@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     BMPDisplay w;
     bmpinfo inf;
-    BMPRead("C:\\Users\\jhong\\Desktop\\testbmp\\default\\minihead.bmp");
+    BMPRead("C:\\Users\\JHong\\Desktop\\testbmp\\default\\head.bmp");
     w.setFixedSize(QSize(Targetinfo.width,Targetinfo.height));
     /*
     for(int i=1;i<=300;i++){w.paintpixel(100,100,100,100,100,i);}
@@ -21,19 +21,18 @@ int main(int argc, char *argv[])
     }*/
 
     //这里有问题，当RGBA结构指针过大
-    /*QImage todisplayBMP(Targetinfo.width,Targetinfo.height, QImage::Format_RGB32);
+    QImage todisplayBMP(2000,2000, QImage::Format_RGB32);
     QColor colortemp;
-    for(int j=(Targetinfo.height-10);j>=0;j--){
-        for(int i=1;i<=(Targetinfo.width-10);i++){
-            RGBA temp = *(ColorData+i+j*64);
-            colortemp.setRed(temp.R);
-            colortemp.setGreen(temp.G);
-            colortemp.setBlue(temp.B);
-            colortemp.setAlpha(temp.A);
+    for(int j=1000;j>=1;j--){
+        for(int i=1;i<=1000;i++){
+            colortemp.setRed(*(RData+j*Targetinfo.width+i));
+            colortemp.setGreen(*(GData+j*Targetinfo.width+i));
+            colortemp.setBlue(*(BData+j*Targetinfo.width+i));
+            colortemp.setAlpha(*(AData+j*Targetinfo.width+i));
             todisplayBMP.setPixelColor(i,j,colortemp);
         }
     }
-    w.importpaintimage(todisplayBMP);*/
+    w.importpaintimage(todisplayBMP);
     w.show();
     if(Targethead.successfullyopened){
         string wtw[75];
@@ -48,9 +47,9 @@ int main(int argc, char *argv[])
         wtw[8]="图像垂直分辨率："+numtostr(Targetinfo.verticalresolution)+"Pixels/metre";
         wtw[9]="图像实际颜色索引："+numtostr(Targetinfo.acturalcolorindex);
         wtw[10]="图像重要颜色索引："+numtostr(Targetinfo.importantcolorindex);
-        for(int i=0;i<50;i++){
+        /*for(int i=0;i<50;i++){
             wtw[11+i] = "("+numtostr((ColorData+i)->R)+","+numtostr((ColorData+i)->G)+","+numtostr((ColorData+i)->B)+")";
-        }
+        }*/
         inf.bmpinfoprint(wtw);
     }
     inf.show();
@@ -114,27 +113,34 @@ void BMPRead(string source){ //BMP解码器
     byteflowreadint(&bmpin,4,&Targetinfo.importantcolorindex);//读入重要颜色索引数
 
     //BMP颜色表读取部分
-    ColorTable = (RGBA*)malloc(Targetinfo.acturalcolorindex * sizeof(RGBA));
+    RTable = (int*)malloc(Targetinfo.acturalcolorindex * sizeof(int));
+    GTable = (int*)malloc(Targetinfo.acturalcolorindex * sizeof(int));
+    BTable = (int*)malloc(Targetinfo.acturalcolorindex * sizeof(int));
+    ATable = (int*)malloc(Targetinfo.acturalcolorindex * sizeof(int));
     unsigned char temp;
     for (int i = 0; i < Targetinfo.acturalcolorindex; i++) {
         bmpin >> temp;
-        (ColorTable + i)->B = int(temp);
+        *(BTable + i) = int(temp);
         bmpin >> temp;
-        (ColorTable + i)->G = int(temp);
+        *(GTable + i) = int(temp);
         bmpin >> temp;
-        (ColorTable + i)->R = int(temp);
+        *(RTable + i) = int(temp);
         bmpin >> temp;
-        (ColorTable + i)->A = int(temp);
+        *(ATable + i) = int(temp);
      }
      long long allpixels = Targetinfo.width * Targetinfo.height / 3;
-     ColorData = (RGBA*)malloc(allpixels * sizeof(RGBA));
+     RData = (int*)malloc(allpixels * sizeof(int));
+     GData = (int*)malloc(allpixels * sizeof(int));
+     BData = (int*)malloc(allpixels * sizeof(int));
+     AData = (int*)malloc(allpixels * sizeof(int));
      for (int i = 0; i < allpixels; i++) {
         bmpin >> temp;
-        (ColorData + i)->B = int(temp);
+        *(BData + i) = int(temp);
         bmpin >> temp;
-        (ColorData + i)->G = int(temp);
+        *(GData + i) = int(temp);
         bmpin >> temp;
-        (ColorData + i)->R = int(temp);
+        *(RData + i) = int(temp);
+        *(AData + i) = 255;
      }
      Targethead.successfullyopened=true;
 }

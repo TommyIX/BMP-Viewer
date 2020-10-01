@@ -17,11 +17,11 @@ BMPDisplay::~BMPDisplay()
 void BMPDisplay::paintEvent(QPaintEvent *) {
     QPainter painter(this); // this 是 PaintTest 的指针
     QPen pen;
-    //QPixmap tempPixmap = QPixmap::fromImage(imagesource);
-    //painter.drawPixmap(0,0,tempPixmap);
+    QPixmap tempPixmap = QPixmap::fromImage(imagesource);
+    painter.drawPixmap(0,0,tempPixmap);
     return;
 }
 
 void BMPDisplay::importpaintimage(QImage& source){
-    //imagesource=source;
+    imagesource=source;
 }
