@@ -21,10 +21,10 @@ int main(int argc, char *argv[])
     }*/
 
     //这里有问题，当RGBA结构指针过大
-    QImage todisplayBMP(2000,2000, QImage::Format_RGB32);
+    QImage todisplayBMP(Targetinfo.width+10,Targetinfo.height+10, QImage::Format_RGB32);
     QColor colortemp;
-    for(int j=1000;j>=1;j--){
-        for(int i=1;i<=1000;i++){
+    for(int j=Targetinfo.height;j>=1;j--){
+        for(int i=1;i<=Targetinfo.width;i++){
             colortemp.setRed(*(RData+j*Targetinfo.width+i));
             colortemp.setGreen(*(GData+j*Targetinfo.width+i));
             colortemp.setBlue(*(BData+j*Targetinfo.width+i));
@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
         wtw[9]="图像实际颜色索引："+numtostr(Targetinfo.acturalcolorindex);
         wtw[10]="图像重要颜色索引："+numtostr(Targetinfo.importantcolorindex);
         /*for(int i=0;i<50;i++){
-            wtw[11+i] = "("+numtostr((ColorData+i)->R)+","+numtostr((ColorData+i)->G)+","+numtostr((ColorData+i)->B)+")";
+            wtw[11+i] = "("+numtostr(*(RData+1000000+i))+","+numtostr(*(GData+1000000+i))+","+numtostr(*(BData+1000000+i))+")";
         }*/
         inf.bmpinfoprint(wtw);
     }
@@ -113,11 +113,13 @@ void BMPRead(string source){ //BMP解码器
     byteflowreadint(&bmpin,4,&Targetinfo.importantcolorindex);//读入重要颜色索引数
 
     //BMP颜色表读取部分
+    unsigned char temp;
+    /*
     RTable = (int*)malloc(Targetinfo.acturalcolorindex * sizeof(int));
     GTable = (int*)malloc(Targetinfo.acturalcolorindex * sizeof(int));
     BTable = (int*)malloc(Targetinfo.acturalcolorindex * sizeof(int));
     ATable = (int*)malloc(Targetinfo.acturalcolorindex * sizeof(int));
-    unsigned char temp;
+
     for (int i = 0; i < Targetinfo.acturalcolorindex; i++) {
         bmpin >> temp;
         *(BTable + i) = int(temp);
@@ -127,8 +129,8 @@ void BMPRead(string source){ //BMP解码器
         *(RTable + i) = int(temp);
         bmpin >> temp;
         *(ATable + i) = int(temp);
-     }
-     long long allpixels = Targetinfo.width * Targetinfo.height / 3;
+     }*/
+     long long allpixels = Targetinfo.width * Targetinfo.height;
      RData = (int*)malloc(allpixels * sizeof(int));
      GData = (int*)malloc(allpixels * sizeof(int));
      BData = (int*)malloc(allpixels * sizeof(int));
