@@ -7,19 +7,21 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     BMPDisplay w;
     bmpinfo inf;
-    BMPRead("C:\\Users\\JHong\\Desktop\\testbmp\\default\\head.bmp");
+    string category = "C:\\Users\\JHong\\Desktop\\testbmp\\default\\head.bmp";
+    BMPRead(category);
     w.setFixedSize(QSize(Targetinfo.width,Targetinfo.height));
-
 
     //翻车高发地，当读取的数据过大时，会直接造成程序崩溃
     QImage todisplayBMP(2000,2000, QImage::Format_RGB32);
     QColor colortemp;
-    for(int j=1000;j>=1;j--){
-        for(int i=1;i<=1000;i++){
-            colortemp.setRed(*(RData+10+i));
-            colortemp.setGreen(*(GData+10+i));
-            colortemp.setBlue(*(BData+10+i));
-            colortemp.setAlpha(*(AData+10+i));
+    std::ifstream pixeldata(category,std::ios::in|std::ios::binary);
+    for(int i=0;i<Targethead.shiftbyte;i++){pixeldata.get();}
+    for(int j=Targetinfo.height-1;j>=0;j--){
+        for(int i=0;i<=Targetinfo.width-1;i++){
+            colortemp.setBlue(int(pixeldata.get()));
+            colortemp.setGreen(int(pixeldata.get()));
+            colortemp.setRed(int(pixeldata.get()));
+            colortemp.setAlpha(255);
             todisplayBMP.setPixelColor(i,j,colortemp);
         }
     }
@@ -41,7 +43,7 @@ int main(int argc, char *argv[])
         wtw[9]="图像实际颜色索引："+numtostr(Targetinfo.acturalcolorindex);
         wtw[10]="图像重要颜色索引："+numtostr(Targetinfo.importantcolorindex);
         /*for(int i=0;i<50;i++){
-            wtw[11+i] = "("+numtostr((ColorData+i)->R)+","+numtostr((ColorData+i)->G)+","+numtostr((ColorData+i)->B)+")";
+            wtw[11+i] = "("+numtostr(*(RData+i+1000000))+","+numtostr(*(GData+i+1000000))+","+numtostr(*(BData+i+1000000))+")";
         }*/
         inf.bmpinfoprint(wtw);
     }
@@ -106,11 +108,11 @@ void BMPRead(string source){ //BMP解码器
     byteflowreadint(&bmpin,4,&Targetinfo.importantcolorindex);//读入重要颜色索引数
 
     //BMP颜色表读取部分
+    /*
     RTable = (int*)malloc(Targetinfo.acturalcolorindex * sizeof(int));
     GTable = (int*)malloc(Targetinfo.acturalcolorindex * sizeof(int));
     BTable = (int*)malloc(Targetinfo.acturalcolorindex * sizeof(int));
     ATable = (int*)malloc(Targetinfo.acturalcolorindex * sizeof(int));
-    unsigned char temp;
     for (int i = 0; i < Targetinfo.acturalcolorindex; i++) {
         bmpin >> temp;
         *(BTable + i) = int(temp);
@@ -121,21 +123,18 @@ void BMPRead(string source){ //BMP解码器
         bmpin >> temp;
         *(ATable + i) = int(temp);
      }
-     long long allpixels = Targetinfo.width * Targetinfo.height / 3;
+
      RData = (int*)malloc(allpixels * sizeof(int));
      GData = (int*)malloc(allpixels * sizeof(int));
      BData = (int*)malloc(allpixels * sizeof(int));
      AData = (int*)malloc(allpixels * sizeof(int));
-     for (int i = 0; i < allpixels; i++) {
-        bmpin >> temp;
-        *(BData + i) = int(temp);
-        bmpin >> temp;
-        *(GData + i) = int(temp);
-        bmpin >> temp;
-        *(RData + i) = int(temp);
-        *(AData + i) = 255;
-     }
+     int j=0;
+     int maximumclindex = Targetinfo.width*Targetinfo.height*3;
+     for(int i=0;i<maximumclindex;i++){
+         *(allimdata+i) = bmpin.get();
+     }*/
      Targethead.successfullyopened=true;
+     bmpin.close();
 }
 void byteflowreadint(std::ifstream* source,int length,int* savelocation){
     unsigned char* temp = (unsigned char*)malloc(length*sizeof(unsigned char));

@@ -40,9 +40,9 @@ struct BMPinformation{ //第二部分数据：位图信息
     int acturalcolorindex;
     int importantcolorindex;
 }Targetinfo;
-int *RTable,*GTable,*BTable,*ATable;
-int *RData,*GData,*BData,*AData;
-
+// *RTable,*GTable,*BTable,*ATable;
+//int *RData,*GData,*BData,*AData;
+int* allimdata;
 
 /*struct RGBA{
     int R,G,B,A=255;
