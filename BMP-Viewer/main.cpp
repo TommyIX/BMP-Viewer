@@ -9,31 +9,24 @@ int main(int argc, char *argv[])
     bmpinfo inf;
     BMPRead("C:\\Users\\JHong\\Desktop\\testbmp\\default\\head.bmp");
     w.setFixedSize(QSize(Targetinfo.width,Targetinfo.height));
-    /*
-    for(int i=1;i<=300;i++){w.paintpixel(100,100,100,100,100,i);}
-    if(Targethead.successfullyopened){
-        for(int j=Targetinfo.height;j>=0;j--){
-            for(int i=1;i<=Targetinfo.width;i++){
-                RGBA temp = *(ColorData+(j-1)*Targetinfo.width+i);
-                w.paintpixel(temp.R,temp.G,temp.B,0,i,j);
-            }
-        }
-    }*/
 
-    //这里有问题，当RGBA结构指针过大
+
+    //翻车高发地，当读取的数据过大时，会直接造成程序崩溃
     QImage todisplayBMP(2000,2000, QImage::Format_RGB32);
     QColor colortemp;
     for(int j=1000;j>=1;j--){
         for(int i=1;i<=1000;i++){
-            colortemp.setRed(*(RData+j*Targetinfo.width+i));
-            colortemp.setGreen(*(GData+j*Targetinfo.width+i));
-            colortemp.setBlue(*(BData+j*Targetinfo.width+i));
-            colortemp.setAlpha(*(AData+j*Targetinfo.width+i));
+            colortemp.setRed(*(RData+10+i));
+            colortemp.setGreen(*(GData+10+i));
+            colortemp.setBlue(*(BData+10+i));
+            colortemp.setAlpha(*(AData+10+i));
             todisplayBMP.setPixelColor(i,j,colortemp);
         }
     }
     w.importpaintimage(todisplayBMP);
     w.show();
+
+
     if(Targethead.successfullyopened){
         string wtw[75];
         wtw[0]="文件大小："+numtostr(Targethead.sizebyte)+"Bytes";
