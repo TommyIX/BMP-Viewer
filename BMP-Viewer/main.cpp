@@ -47,9 +47,9 @@ int main(int argc, char *argv[])
         wtw[8]="图像垂直分辨率："+numtostr(Targetinfo.verticalresolution)+"Pixels/metre";
         wtw[9]="图像实际颜色索引："+numtostr(Targetinfo.acturalcolorindex);
         wtw[10]="图像重要颜色索引："+numtostr(Targetinfo.importantcolorindex);
-        /*for(int i=0;i<50;i++){
+        for(int i=0;i<50;i++){
             wtw[11+i] = "("+numtostr(*(RData+1000000+i))+","+numtostr(*(GData+1000000+i))+","+numtostr(*(BData+1000000+i))+")";
-        }*/
+        }
         inf.bmpinfoprint(wtw);
     }
     inf.show();
