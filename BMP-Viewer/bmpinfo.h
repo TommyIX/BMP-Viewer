@@ -3,6 +3,7 @@
 
 #include <string>
 #include <QDialog>
+#include <qcustomplot.h>
 
 namespace Ui {
 class bmpinfo;
@@ -16,7 +17,7 @@ public:
     explicit bmpinfo(QWidget *parent = nullptr);
     ~bmpinfo();
     void bmpinfoprint(std::string*);
-
+    void plotinit(QImage*);
 private:
     Ui::bmpinfo *ui;
 };

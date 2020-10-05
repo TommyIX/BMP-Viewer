@@ -272,6 +272,7 @@ Makefile: ../BMP-Viewer/BMP-Viewer.pro C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73
 		C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73_32/mkspecs/features/yacc.prf \
 		C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73_32/mkspecs/features/lex.prf \
 		../BMP-Viewer/BMP-Viewer.pro \
+		C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73_32/lib/Qt5PrintSupport.prl \
 		C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73_32/lib/Qt5Widgets.prl \
 		C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73_32/lib/Qt5Gui.prl \
 		C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73_32/lib/Qt5Core.prl \
@@ -480,6 +481,7 @@ C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73_32/mkspecs/features/exceptions.prf:
 C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73_32/mkspecs/features/yacc.prf:
 C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73_32/mkspecs/features/lex.prf:
 ../BMP-Viewer/BMP-Viewer.pro:
+C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73_32/lib/Qt5PrintSupport.prl:
 C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73_32/lib/Qt5Widgets.prl:
 C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73_32/lib/Qt5Gui.prl:
 C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73_32/lib/Qt5Core.prl:

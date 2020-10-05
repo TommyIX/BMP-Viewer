@@ -13,6 +13,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QListView>
+#include "qcustomplot.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -20,19 +21,23 @@ class Ui_bmpinfo
 {
 public:
     QListView *listView;
+    QCustomPlot *widget;
 
     void setupUi(QDialog *bmpinfo)
     {
         if (bmpinfo->objectName().isEmpty())
             bmpinfo->setObjectName(QString::fromUtf8("bmpinfo"));
-        bmpinfo->resize(552, 527);
-        bmpinfo->setMinimumSize(QSize(552, 527));
+        bmpinfo->resize(400, 527);
+        bmpinfo->setMinimumSize(QSize(400, 527));
         bmpinfo->setMaximumSize(QSize(1000, 1000));
         listView = new QListView(bmpinfo);
         listView->setObjectName(QString::fromUtf8("listView"));
-        listView->setGeometry(QRect(0, 0, 551, 341));
+        listView->setGeometry(QRect(0, 0, 401, 301));
         listView->setMinimumSize(QSize(0, 0));
         listView->setMaximumSize(QSize(1000, 1000));
+        widget = new QCustomPlot(bmpinfo);
+        widget->setObjectName(QString::fromUtf8("widget"));
+        widget->setGeometry(QRect(10, 310, 381, 211));
 
         retranslateUi(bmpinfo);
 

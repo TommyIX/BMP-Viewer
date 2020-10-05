@@ -9,11 +9,13 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <vector>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <windows.h>
 using std::string;
+using std::vector;
 
 //函数定义表
 void BMPRead(string);
@@ -22,7 +24,7 @@ long long HexChartoint(unsigned char*, int);
 void byteflowreadint(std::ifstream*,int,int*);
 
 //常量表
-const char hex[16] = { '0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F' };
+const char myhex[16] = { '0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F' };
 
 struct BMPfilehead{ //第一部分数据：BMP文件头
     bool successfullyopened=false;
@@ -40,15 +42,7 @@ struct BMPinformation{ //第二部分数据：位图信息
     int acturalcolorindex;
     int importantcolorindex;
 }Targetinfo;
-// *RTable,*GTable,*BTable,*ATable;
-//int *RData,*GData,*BData,*AData;
-int* allimdata;
-
-/*struct RGBA{
-    int R,G,B,A=255;
-};
-RGBA* ColorTable;
-RGBA* ColorData;*/
+vector<QColor> colormap;
 
 template <class M>
 string numtostr(M numtop){

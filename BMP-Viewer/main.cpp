@@ -7,28 +7,92 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     BMPDisplay w;
     bmpinfo inf;
-    string category = "C:\\Users\\JHong\\Desktop\\testbmp\\default\\head.bmp";
+    string category = "C:\\Users\\JHong\\Desktop\\testbmp\\8.bmp";
     BMPRead(category);
     w.setFixedSize(QSize(Targetinfo.width,Targetinfo.height));
 
     //翻车高发地，当读取的数据过大时，会直接造成程序崩溃
-    QImage todisplayBMP(2000,2000, QImage::Format_RGB32);
+    QImage todisplayBMP(Targetinfo.width,Targetinfo.height, QImage::Format_RGB32);
     QColor colortemp;
-    std::ifstream pixeldata(category,std::ios::in|std::ios::binary);
-    for(int i=0;i<Targethead.shiftbyte;i++){pixeldata.get();}
-    for(int j=Targetinfo.height-1;j>=0;j--){
-        for(int i=0;i<=Targetinfo.width-1;i++){
-            colortemp.setBlue(int(pixeldata.get()));
-            colortemp.setGreen(int(pixeldata.get()));
-            colortemp.setRed(int(pixeldata.get()));
-            colortemp.setAlpha(255);
-            todisplayBMP.setPixelColor(i,j,colortemp);
+
+    //此处根据位宽区别读取方法
+    if(Targetinfo.pixelbit ==24){
+        std::ifstream pixeldata(category,std::ios::in|std::ios::binary);
+        for(int i=0;i<Targethead.shiftbyte;i++){pixeldata.get();}
+        for(int j=Targetinfo.height-1;j>=0;j--){
+            for(int i=0;i<=Targetinfo.width-1;i++){
+                colortemp.setBlue(int(pixeldata.get()));
+                colortemp.setGreen(int(pixeldata.get()));
+                colortemp.setRed(int(pixeldata.get()));
+                colortemp.setAlpha(255);
+                todisplayBMP.setPixelColor(i,j,colortemp);
+            }
         }
     }
+    else if(Targetinfo.pixelbit ==16){
+        //565还要搞
+        int rawpixel16;
+        std::ifstream pixeldata(category,std::ios::in|std::ios::binary);
+        for(int i=0;i<Targethead.shiftbyte;i++){pixeldata.get();}
+        if(Targetinfo.compassrate==0){ //555模式
+            for(int j=Targetinfo.height-1;j>=0;j--){
+                for(int i=0;i<=Targetinfo.width-1;i++){
+                    byteflowreadint(&pixeldata,2,&rawpixel16);
+                    colortemp.setRed((rawpixel16 & 0x7c00)>>7);
+                    colortemp.setGreen((rawpixel16 & 0x03e0)>>2);
+                    colortemp.setBlue((rawpixel16 & 0x001f)<<2);
+                    colortemp.setAlpha(255);
+                    todisplayBMP.setPixelColor(i,j,colortemp);
+                }
+            }
+        }
+        else{ //565模式
+            for(int j=Targetinfo.height-1;j>=0;j--){
+                for(int i=0;i<=Targetinfo.width-1;i++){
+                    byteflowreadint(&pixeldata,2,&rawpixel16);
+                    colortemp.setRed((rawpixel16 & 0x7c00)>>7);
+                    colortemp.setGreen((rawpixel16 & 0x03e0)>>2);
+                    colortemp.setBlue((rawpixel16 & 0x001f)<<2);
+                    colortemp.setAlpha(255);
+                    todisplayBMP.setPixelColor(i,j,colortemp);
+                }
+            }
+        }
+    }
+    else if(Targetinfo.pixelbit ==8){
+        std::ifstream mapdata(category,std::ios::in|std::ios::binary);
+        for(int i=0;i<54;i++){mapdata.get();}
+        QColor mapcolortemp;
+        for(int i=54;i<Targethead.shiftbyte;i+=4){
+            mapcolortemp.setBlue(int(mapdata.get()));
+            mapcolortemp.setGreen(int(mapdata.get()));
+            mapcolortemp.setRed(int(mapdata.get()));
+            mapcolortemp.setAlpha(int(mapdata.get()));
+            colormap.push_back(mapcolortemp);
+        }
+        mapdata.close();
+        std::ifstream pixeldata(category,std::ios::in|std::ios::binary);
+        for(int i=0;i<Targethead.shiftbyte;i++){pixeldata.get();}
+        for(int j=Targetinfo.height-1;j>=0;j--){
+            for(int i=0;i<=Targetinfo.width-1;i++){
+                todisplayBMP.setPixelColor(i,j,colormap[int(pixeldata.get())]);
+            }
+        }
+    }
+    else if(Targetinfo.pixelbit ==4){
+        //todo
+    }
+    else if(Targetinfo.pixelbit ==1){
+        //todo
+    }
+    else{
+        qDebug()<<"Broken BMP bits!";
+        return 0;
+    }
+
     w.importpaintimage(todisplayBMP);
     w.show();
-
-
+    inf.plotinit(&todisplayBMP);
     if(Targethead.successfullyopened){
         string wtw[75];
         wtw[0]="文件大小："+numtostr(Targethead.sizebyte)+"Bytes";
@@ -42,11 +106,9 @@ int main(int argc, char *argv[])
         wtw[8]="图像垂直分辨率："+numtostr(Targetinfo.verticalresolution)+"Pixels/metre";
         wtw[9]="图像实际颜色索引："+numtostr(Targetinfo.acturalcolorindex);
         wtw[10]="图像重要颜色索引："+numtostr(Targetinfo.importantcolorindex);
-        /*for(int i=0;i<50;i++){
-            wtw[11+i] = "("+numtostr(*(RData+i+1000000))+","+numtostr(*(GData+i+1000000))+","+numtostr(*(BData+i+1000000))+")";
-        }*/
         inf.bmpinfoprint(wtw);
     }
+    inf.move(w.x()+w.width(),w.y());
     inf.show();
     return a.exec();
 }
@@ -107,32 +169,6 @@ void BMPRead(string source){ //BMP解码器
     byteflowreadint(&bmpin,4,&Targetinfo.acturalcolorindex);//读入实际颜色索引数
     byteflowreadint(&bmpin,4,&Targetinfo.importantcolorindex);//读入重要颜色索引数
 
-    //BMP颜色表读取部分
-    /*
-    RTable = (int*)malloc(Targetinfo.acturalcolorindex * sizeof(int));
-    GTable = (int*)malloc(Targetinfo.acturalcolorindex * sizeof(int));
-    BTable = (int*)malloc(Targetinfo.acturalcolorindex * sizeof(int));
-    ATable = (int*)malloc(Targetinfo.acturalcolorindex * sizeof(int));
-    for (int i = 0; i < Targetinfo.acturalcolorindex; i++) {
-        bmpin >> temp;
-        *(BTable + i) = int(temp);
-        bmpin >> temp;
-        *(GTable + i) = int(temp);
-        bmpin >> temp;
-        *(RTable + i) = int(temp);
-        bmpin >> temp;
-        *(ATable + i) = int(temp);
-     }
-
-     RData = (int*)malloc(allpixels * sizeof(int));
-     GData = (int*)malloc(allpixels * sizeof(int));
-     BData = (int*)malloc(allpixels * sizeof(int));
-     AData = (int*)malloc(allpixels * sizeof(int));
-     int j=0;
-     int maximumclindex = Targetinfo.width*Targetinfo.height*3;
-     for(int i=0;i<maximumclindex;i++){
-         *(allimdata+i) = bmpin.get();
-     }*/
      Targethead.successfullyopened=true;
      bmpin.close();
 }
@@ -161,7 +197,7 @@ long long HexChartoint(unsigned char* target, int length) { //注意：为HexCha
         temptarget = *(target + i);
         decnum[0] = temptarget / 16;
         decnum[1] = temptarget % 16;
-        toconverthex = toconverthex + hex[decnum[0]] + hex[decnum[1]];
+        toconverthex = toconverthex + myhex[decnum[0]] + myhex[decnum[1]];
     }
     int powwhat = length * 2 - 1;
     long long output = 0;

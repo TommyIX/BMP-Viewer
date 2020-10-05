@@ -1,6 +1,6 @@
 QT       += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 
 CONFIG += c++11
 
@@ -18,12 +18,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     bmpinfo.cpp \
     main.cpp \
-    bmpdisplay.cpp
+    bmpdisplay.cpp \
+    qcustomplot.cpp
 
 HEADERS += \
     bmpdisplay.h \
     bmpinfo.h \
-    main.h
+    main.h \
+    qcustomplot.h
 
 FORMS += \
     bmpdisplay.ui \

@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>552</width>
+    <width>400</width>
     <height>527</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>552</width>
+    <width>400</width>
     <height>527</height>
    </size>
   </property>
@@ -30,8 +30,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>551</width>
-     <height>341</height>
+     <width>401</width>
+     <height>301</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -47,7 +47,25 @@
     </size>
    </property>
   </widget>
+  <widget class="QCustomPlot" name="widget" native="true">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>310</y>
+     <width>381</width>
+     <height>211</height>
+    </rect>
+   </property>
+  </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
