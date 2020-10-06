@@ -1,6 +1,8 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#include "bmpdisplay.h"
+#include "bmpinfo.h"
 #include <QApplication>
 #include <QException>
 #include <QMenuBar>
@@ -24,6 +26,7 @@ void BMPRead(string);
 void CharReverse(unsigned char*, int);
 long long HexChartoint(unsigned char*, int);
 void byteflowreadint(std::ifstream*,int,int*);
+void showit(void);
 
 //常量表
 const char myhex[16] = { '0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F' };
@@ -45,6 +48,7 @@ struct BMPinformation{ //第二部分数据：位图信息
     int importantcolorindex;
 }Targetinfo;
 vector<QColor> colormap;
+
 
 template <class M>
 string numtostr(M numtop){

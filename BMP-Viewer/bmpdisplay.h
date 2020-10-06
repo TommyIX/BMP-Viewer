@@ -2,6 +2,8 @@
 #define BMPDISPLAY_H
 
 #include <QMainWindow>
+#include <QFileDialog>
+#include <QMessageBox>
 #include <QPainter>
 #include <QWidget>
 #include <QLabel>
@@ -19,10 +21,13 @@ public:
     ~BMPDisplay();
     void paintEvent(QPaintEvent *);
     void importpaintimage(QImage&);
-    //void paintpixel(int,int,int,int,int,int);
 
 private slots:
     void on_action_4_triggered();
+
+    void on_action_triggered();
+
+    void on_action_2_triggered();
 
 private:
     Ui::BMPDisplay *ui;

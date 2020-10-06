@@ -1,17 +1,23 @@
-#include "bmpdisplay.h"
-#include "bmpinfo.h"
 #include "main.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    string category;
+    QString file_name = QFileDialog::getOpenFileName(NULL,QString::fromStdString("请打开一个BMP文件"),QString::fromStdString(""),QString::fromStdString("Bitmap Image (*.bmp)"),NULL,NULL);
+        if (!file_name.isNull())
+        {
+            category = file_name.toStdString();
+        }
+        else{
+            exit(0);
+        }
     BMPDisplay w;
     bmpinfo inf;
-    string category = "C:\\Users\\JHong\\Desktop\\testbmp\\8.bmp";
+    w.show();
     BMPRead(category);
-    w.setFixedSize(QSize(Targetinfo.width,Targetinfo.height));
-
-    //翻车高发地，当读取的数据过大时，会直接造成程序崩溃
+    if(!Targethead.successfullyopened) w.setFixedSize(QSize(600,600));
+    else {w.setFixedSize(QSize(Targetinfo.width,Targetinfo.height));
     QImage todisplayBMP(Targetinfo.width,Targetinfo.height, QImage::Format_RGB32);
     QColor colortemp;
 
@@ -30,7 +36,6 @@ int main(int argc, char *argv[])
         }
     }
     else if(Targetinfo.pixelbit ==16){
-        //565还要搞
         int rawpixel16;
         std::ifstream pixeldata(category,std::ios::in|std::ios::binary);
         for(int i=0;i<Targethead.shiftbyte;i++){pixeldata.get();}
@@ -121,6 +126,7 @@ int main(int argc, char *argv[])
             mapcolortemp.setRed(int(mapdata.get()));
             mapcolortemp.setAlpha(int(mapdata.get()));
             colormap.push_back(mapcolortemp);
+            qDebug()<<mapcolortemp.red()<<","<<mapcolortemp.green()<<","<<mapcolortemp.blue();
         }
         mapdata.close();
         std::ifstream pixeldata(category,std::ios::in|std::ios::binary);
@@ -129,26 +135,24 @@ int main(int argc, char *argv[])
         for(int j=Targetinfo.height-1;j>=0;j--){
             for(int i=0;i<=Targetinfo.width-1;i++){
                     if (eightpixelsbuffer.empty()){
-                        int temp = int(mapdata.get());
-                        eightpixelsbuffer.push_back((temp & 0x80)>>7);
-                        eightpixelsbuffer.push_back((temp & 0x40)>>6);
+                        int temp = pixeldata.get();
+                        eightpixelsbuffer.push_back((temp&0x80)>>7);
+                        eightpixelsbuffer.push_back((temp&0x40)>>6);
                         eightpixelsbuffer.push_back((temp&0x20)>>5);
                         eightpixelsbuffer.push_back((temp&0x10)>>4);
                         eightpixelsbuffer.push_back((temp&0x08)>>3);
                         eightpixelsbuffer.push_back((temp&0x04)>>2);
                         eightpixelsbuffer.push_back((temp&0x02)>>1);
                         eightpixelsbuffer.push_back((temp&0x01));
-                        qDebug()<<((temp&0x80)>>7)<<((temp&0x40)>>6);
+                        //qDebug()<<eightpixelsbuffer[0]<<eightpixelsbuffer[1]<<eightpixelsbuffer[2]<<eightpixelsbuffer[3]<<eightpixelsbuffer[4]<<eightpixelsbuffer[5]<<eightpixelsbuffer[6]<<eightpixelsbuffer[7];
                     }
                     todisplayBMP.setPixelColor(i,j,colormap[eightpixelsbuffer.front()]);
                     eightpixelsbuffer.pop_front();
                 }
             }
     }
-
     else{
-        qDebug()<<"Broken BMP bits!";
-        return 0;
+        qDebug()<<"Unsupported BMP bits!";
     }
 
     w.importpaintimage(todisplayBMP);
@@ -171,6 +175,7 @@ int main(int argc, char *argv[])
     }
     inf.move(w.x()+w.width(),w.y());
     inf.show();
+    }
     return a.exec();
 }
 

@@ -23,12 +23,13 @@ QT_BEGIN_NAMESPACE
 class Ui_BMPDisplay
 {
 public:
-    QAction *action_2;
     QAction *action_4;
     QAction *action;
+    QAction *action_2;
     QWidget *centralwidget;
     QMenuBar *menubar;
     QMenu *menu;
+    QMenu *menu_2;
     QStatusBar *statusbar;
 
     void setupUi(QMainWindow *BMPDisplay)
@@ -42,30 +43,33 @@ public:
         sizePolicy.setHeightForWidth(BMPDisplay->sizePolicy().hasHeightForWidth());
         BMPDisplay->setSizePolicy(sizePolicy);
         BMPDisplay->setMaximumSize(QSize(1024, 1024));
-        action_2 = new QAction(BMPDisplay);
-        action_2->setObjectName(QString::fromUtf8("action_2"));
         action_4 = new QAction(BMPDisplay);
         action_4->setObjectName(QString::fromUtf8("action_4"));
         action = new QAction(BMPDisplay);
         action->setObjectName(QString::fromUtf8("action"));
+        action_2 = new QAction(BMPDisplay);
+        action_2->setObjectName(QString::fromUtf8("action_2"));
         centralwidget = new QWidget(BMPDisplay);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         BMPDisplay->setCentralWidget(centralwidget);
         menubar = new QMenuBar(BMPDisplay);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 800, 25));
+        menubar->setGeometry(QRect(0, 0, 800, 21));
         menu = new QMenu(menubar);
         menu->setObjectName(QString::fromUtf8("menu"));
+        menu_2 = new QMenu(menubar);
+        menu_2->setObjectName(QString::fromUtf8("menu_2"));
         BMPDisplay->setMenuBar(menubar);
         statusbar = new QStatusBar(BMPDisplay);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
         BMPDisplay->setStatusBar(statusbar);
 
         menubar->addAction(menu->menuAction());
-        menu->addAction(action_2);
+        menubar->addAction(menu_2->menuAction());
         menu->addAction(action);
         menu->addSeparator();
         menu->addAction(action_4);
+        menu_2->addAction(action_2);
 
         retranslateUi(BMPDisplay);
 
@@ -75,10 +79,11 @@ public:
     void retranslateUi(QMainWindow *BMPDisplay)
     {
         BMPDisplay->setWindowTitle(QCoreApplication::translate("BMPDisplay", "BMPDisplay", nullptr));
-        action_2->setText(QCoreApplication::translate("BMPDisplay", "\346\211\223\345\274\200", nullptr));
         action_4->setText(QCoreApplication::translate("BMPDisplay", "\351\200\200\345\207\272", nullptr));
         action->setText(QCoreApplication::translate("BMPDisplay", "\345\233\276\345\203\217\345\217\246\345\255\230\344\270\272", nullptr));
+        action_2->setText(QCoreApplication::translate("BMPDisplay", "\345\205\263\344\272\216", nullptr));
         menu->setTitle(QCoreApplication::translate("BMPDisplay", "\346\226\207\344\273\266", nullptr));
+        menu_2->setTitle(QCoreApplication::translate("BMPDisplay", "\345\205\263\344\272\216", nullptr));
     } // retranslateUi
 
 };
