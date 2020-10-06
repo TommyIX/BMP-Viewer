@@ -25,3 +25,8 @@ void BMPDisplay::paintEvent(QPaintEvent *) {
 void BMPDisplay::importpaintimage(QImage& source){
     imagesource=source;
 }
+
+void BMPDisplay::on_action_4_triggered()
+{
+
+}

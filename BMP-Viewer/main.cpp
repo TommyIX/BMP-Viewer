@@ -38,9 +38,9 @@ int main(int argc, char *argv[])
             for(int j=Targetinfo.height-1;j>=0;j--){
                 for(int i=0;i<=Targetinfo.width-1;i++){
                     byteflowreadint(&pixeldata,2,&rawpixel16);
-                    colortemp.setRed((rawpixel16 & 0x7c00)>>7);
-                    colortemp.setGreen((rawpixel16 & 0x03e0)>>2);
-                    colortemp.setBlue((rawpixel16 & 0x001f)<<2);
+                    colortemp.setRed((int((rawpixel16 & 0x7c00)>>10)+1)*8-1);
+                    colortemp.setGreen((int((rawpixel16 & 0x03e0)>>5)+1)*8-1);
+                    colortemp.setBlue((int(rawpixel16 & 0x001f)+1)*8-1);
                     colortemp.setAlpha(255);
                     todisplayBMP.setPixelColor(i,j,colortemp);
                 }
@@ -50,9 +50,9 @@ int main(int argc, char *argv[])
             for(int j=Targetinfo.height-1;j>=0;j--){
                 for(int i=0;i<=Targetinfo.width-1;i++){
                     byteflowreadint(&pixeldata,2,&rawpixel16);
-                    colortemp.setRed((rawpixel16 & 0x7c00)>>7);
-                    colortemp.setGreen((rawpixel16 & 0x03e0)>>2);
-                    colortemp.setBlue((rawpixel16 & 0x001f)<<2);
+                    colortemp.setRed((int((rawpixel16 & 0xf800)>>11)+1)*8-1);
+                    colortemp.setGreen((int((rawpixel16 & 0x07e0)>>5)+1)*8-1);
+                    colortemp.setBlue((int(rawpixel16 & 0x001f)+1)*8-1);
                     colortemp.setAlpha(255);
                     todisplayBMP.setPixelColor(i,j,colortemp);
                 }
@@ -80,11 +80,72 @@ int main(int argc, char *argv[])
         }
     }
     else if(Targetinfo.pixelbit ==4){
-        //todo
+        std::ifstream mapdata(category,std::ios::in|std::ios::binary);
+        for(int i=0;i<54;i++){mapdata.get();}
+        QColor mapcolortemp;
+        for(int i=54;i<Targethead.shiftbyte;i+=4){
+            mapcolortemp.setBlue(int(mapdata.get()));
+            mapcolortemp.setGreen(int(mapdata.get()));
+            mapcolortemp.setRed(int(mapdata.get()));
+            mapcolortemp.setAlpha(int(mapdata.get()));
+            colormap.push_back(mapcolortemp);
+        }
+        mapdata.close();
+        std::ifstream pixeldata(category,std::ios::in|std::ios::binary);
+        for(int i=0;i<Targethead.shiftbyte;i++){pixeldata.get();}
+        int twopixelsbuffer;
+        bool bufferempty = true;
+        for(int j=Targetinfo.height-1;j>=0;j--){
+            for(int i=0;i<=Targetinfo.width-1;i++){
+                if(bufferempty){
+                    twopixelsbuffer = int(pixeldata.get());
+                    bufferempty = false;
+                    todisplayBMP.setPixelColor(i,j,colormap[int(twopixelsbuffer & 0xf0)>>4]);
+                    continue;
+                }
+                else{
+                    todisplayBMP.setPixelColor(i,j,colormap[int(twopixelsbuffer & 0x0f)]);
+                    bufferempty = true;
+                    continue;
+                }
+            }
+        }
     }
     else if(Targetinfo.pixelbit ==1){
-        //todo
+        std::ifstream mapdata(category,std::ios::in|std::ios::binary);
+        for(int i=0;i<54;i++){mapdata.get();}
+        QColor mapcolortemp;
+        for(int i=54;i<Targethead.shiftbyte;i+=4){
+            mapcolortemp.setBlue(int(mapdata.get()));
+            mapcolortemp.setGreen(int(mapdata.get()));
+            mapcolortemp.setRed(int(mapdata.get()));
+            mapcolortemp.setAlpha(int(mapdata.get()));
+            colormap.push_back(mapcolortemp);
+        }
+        mapdata.close();
+        std::ifstream pixeldata(category,std::ios::in|std::ios::binary);
+        for(int i=0;i<Targethead.shiftbyte;i++){pixeldata.get();}
+        deque<int> eightpixelsbuffer;
+        for(int j=Targetinfo.height-1;j>=0;j--){
+            for(int i=0;i<=Targetinfo.width-1;i++){
+                    if (eightpixelsbuffer.empty()){
+                        int temp = int(mapdata.get());
+                        eightpixelsbuffer.push_back((temp & 0x80)>>7);
+                        eightpixelsbuffer.push_back((temp & 0x40)>>6);
+                        eightpixelsbuffer.push_back((temp&0x20)>>5);
+                        eightpixelsbuffer.push_back((temp&0x10)>>4);
+                        eightpixelsbuffer.push_back((temp&0x08)>>3);
+                        eightpixelsbuffer.push_back((temp&0x04)>>2);
+                        eightpixelsbuffer.push_back((temp&0x02)>>1);
+                        eightpixelsbuffer.push_back((temp&0x01));
+                        qDebug()<<((temp&0x80)>>7)<<((temp&0x40)>>6);
+                    }
+                    todisplayBMP.setPixelColor(i,j,colormap[eightpixelsbuffer.front()]);
+                    eightpixelsbuffer.pop_front();
+                }
+            }
     }
+
     else{
         qDebug()<<"Broken BMP bits!";
         return 0;

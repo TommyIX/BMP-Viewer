@@ -21,6 +21,9 @@ public:
     void importpaintimage(QImage&);
     //void paintpixel(int,int,int,int,int,int);
 
+private slots:
+    void on_action_4_triggered();
+
 private:
     Ui::BMPDisplay *ui;
     QImage imagesource;

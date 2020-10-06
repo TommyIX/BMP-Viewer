@@ -10,12 +10,14 @@
 #include <sstream>
 #include <fstream>
 #include <vector>
+#include <deque>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <windows.h>
 using std::string;
 using std::vector;
+using std::deque;
 
 //函数定义表
 void BMPRead(string);

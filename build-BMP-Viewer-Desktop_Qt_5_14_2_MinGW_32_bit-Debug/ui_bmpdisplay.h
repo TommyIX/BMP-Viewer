@@ -25,11 +25,10 @@ class Ui_BMPDisplay
 public:
     QAction *action_2;
     QAction *action_4;
-    QAction *action_5;
+    QAction *action;
     QWidget *centralwidget;
     QMenuBar *menubar;
     QMenu *menu;
-    QMenu *menu_2;
     QStatusBar *statusbar;
 
     void setupUi(QMainWindow *BMPDisplay)
@@ -47,8 +46,8 @@ public:
         action_2->setObjectName(QString::fromUtf8("action_2"));
         action_4 = new QAction(BMPDisplay);
         action_4->setObjectName(QString::fromUtf8("action_4"));
-        action_5 = new QAction(BMPDisplay);
-        action_5->setObjectName(QString::fromUtf8("action_5"));
+        action = new QAction(BMPDisplay);
+        action->setObjectName(QString::fromUtf8("action"));
         centralwidget = new QWidget(BMPDisplay);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         BMPDisplay->setCentralWidget(centralwidget);
@@ -57,20 +56,16 @@ public:
         menubar->setGeometry(QRect(0, 0, 800, 25));
         menu = new QMenu(menubar);
         menu->setObjectName(QString::fromUtf8("menu"));
-        menu_2 = new QMenu(menubar);
-        menu_2->setObjectName(QString::fromUtf8("menu_2"));
         BMPDisplay->setMenuBar(menubar);
         statusbar = new QStatusBar(BMPDisplay);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
         BMPDisplay->setStatusBar(statusbar);
 
         menubar->addAction(menu->menuAction());
-        menubar->addAction(menu_2->menuAction());
         menu->addAction(action_2);
+        menu->addAction(action);
         menu->addSeparator();
         menu->addAction(action_4);
-        menu_2->addSeparator();
-        menu_2->addAction(action_5);
 
         retranslateUi(BMPDisplay);
 
@@ -82,9 +77,8 @@ public:
         BMPDisplay->setWindowTitle(QCoreApplication::translate("BMPDisplay", "BMPDisplay", nullptr));
         action_2->setText(QCoreApplication::translate("BMPDisplay", "\346\211\223\345\274\200", nullptr));
         action_4->setText(QCoreApplication::translate("BMPDisplay", "\351\200\200\345\207\272", nullptr));
-        action_5->setText(QCoreApplication::translate("BMPDisplay", "\345\205\263\344\272\216", nullptr));
+        action->setText(QCoreApplication::translate("BMPDisplay", "\345\233\276\345\203\217\345\217\246\345\255\230\344\270\272", nullptr));
         menu->setTitle(QCoreApplication::translate("BMPDisplay", "\346\226\207\344\273\266", nullptr));
-        menu_2->setTitle(QCoreApplication::translate("BMPDisplay", "\345\205\263\344\272\216", nullptr));
     } // retranslateUi
 
 };
