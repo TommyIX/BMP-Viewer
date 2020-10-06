@@ -10,6 +10,7 @@
 #define UI_BMPINFO_H
 
 #include <QtCore/QVariant>
+#include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QListView>
@@ -30,6 +31,9 @@ public:
         bmpinfo->resize(400, 527);
         bmpinfo->setMinimumSize(QSize(400, 527));
         bmpinfo->setMaximumSize(QSize(1000, 1000));
+        QIcon icon;
+        icon.addFile(QString::fromUtf8("bmp_128px_1171017_easyicon.net.ico"), QSize(), QIcon::Normal, QIcon::Off);
+        bmpinfo->setWindowIcon(icon);
         listView = new QListView(bmpinfo);
         listView->setObjectName(QString::fromUtf8("listView"));
         listView->setGeometry(QRect(0, 0, 401, 301));

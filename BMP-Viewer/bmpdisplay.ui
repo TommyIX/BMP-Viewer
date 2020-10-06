@@ -25,6 +25,10 @@
   <property name="windowTitle">
    <string>BMPDisplay</string>
   </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>bmp_128px_1171017_easyicon.net.ico</normaloff>bmp_128px_1171017_easyicon.net.ico</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

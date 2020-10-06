@@ -10,6 +10,7 @@
 #define UI_BMPDISPLAY_H
 
 #include <QtCore/QVariant>
+#include <QtGui/QIcon>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
@@ -43,6 +44,9 @@ public:
         sizePolicy.setHeightForWidth(BMPDisplay->sizePolicy().hasHeightForWidth());
         BMPDisplay->setSizePolicy(sizePolicy);
         BMPDisplay->setMaximumSize(QSize(1024, 1024));
+        QIcon icon;
+        icon.addFile(QString::fromUtf8("bmp_128px_1171017_easyicon.net.ico"), QSize(), QIcon::Normal, QIcon::Off);
+        BMPDisplay->setWindowIcon(icon);
         action_4 = new QAction(BMPDisplay);
         action_4->setObjectName(QString::fromUtf8("action_4"));
         action = new QAction(BMPDisplay);

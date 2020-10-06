@@ -277,7 +277,8 @@ Makefile: ../BMP-Viewer/BMP-Viewer.pro C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73
 		C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73_32/lib/Qt5Gui.prl \
 		C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73_32/lib/Qt5Core.prl \
 		C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73_32/lib/qtmain.prl \
-		C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73_32/mkspecs/features/build_pass.prf
+		C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73_32/mkspecs/features/build_pass.prf \
+		../BMP-Viewer/resource.qrc
 	$(QMAKE) -o Makefile ..\BMP-Viewer\BMP-Viewer.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73_32/mkspecs/features/spec_pre.prf:
 C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73_32/mkspecs/qdevice.pri:
@@ -487,6 +488,7 @@ C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73_32/lib/Qt5Gui.prl:
 C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73_32/lib/Qt5Core.prl:
 C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73_32/lib/qtmain.prl:
 C:/ProgramData/Qt/Qt5.14.2/5.14.2/mingw73_32/mkspecs/features/build_pass.prf:
+../BMP-Viewer/resource.qrc:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ..\BMP-Viewer\BMP-Viewer.pro -spec win32-g++ "CONFIG+=debug" "CONFIG+=qml_debug"
 

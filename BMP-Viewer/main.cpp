@@ -33,6 +33,9 @@ int main(int argc, char *argv[])
                 colortemp.setAlpha(255);
                 todisplayBMP.setPixelColor(i,j,colortemp);
             }
+            if((Targetinfo.width*3)%4!=0){
+                for(int k = (Targetinfo.width*3)%4;k>0;k--){pixeldata.get();}
+            }
         }
     }
     else if(Targetinfo.pixelbit ==16){
@@ -82,6 +85,9 @@ int main(int argc, char *argv[])
             for(int i=0;i<=Targetinfo.width-1;i++){
                 todisplayBMP.setPixelColor(i,j,colormap[int(pixeldata.get())]);
             }
+            if(Targetinfo.width%4!=0){ //4位对齐
+                for(int k = Targetinfo.width%4;k>0;k--){pixeldata.get();}
+            }
         }
     }
     else if(Targetinfo.pixelbit ==4){
@@ -114,6 +120,15 @@ int main(int argc, char *argv[])
                     continue;
                 }
             }
+            int kongguo = Targetinfo.width%8; //4位对齐
+            int yifenpei = kongguo/2;
+            int yizairu = kongguo%2;
+            if(yizairu==0) {
+                for(int i=4-yifenpei;i>0;i--){pixeldata.get();}
+            }
+            else{
+                for(int i=3-yifenpei;i>0;i--){pixeldata.get();}
+            }
         }
     }
     else if(Targetinfo.pixelbit ==1){
@@ -126,7 +141,6 @@ int main(int argc, char *argv[])
             mapcolortemp.setRed(int(mapdata.get()));
             mapcolortemp.setAlpha(int(mapdata.get()));
             colormap.push_back(mapcolortemp);
-            qDebug()<<mapcolortemp.red()<<","<<mapcolortemp.green()<<","<<mapcolortemp.blue();
         }
         mapdata.close();
         std::ifstream pixeldata(category,std::ios::in|std::ios::binary);
@@ -144,12 +158,20 @@ int main(int argc, char *argv[])
                         eightpixelsbuffer.push_back((temp&0x04)>>2);
                         eightpixelsbuffer.push_back((temp&0x02)>>1);
                         eightpixelsbuffer.push_back((temp&0x01));
-                        //qDebug()<<eightpixelsbuffer[0]<<eightpixelsbuffer[1]<<eightpixelsbuffer[2]<<eightpixelsbuffer[3]<<eightpixelsbuffer[4]<<eightpixelsbuffer[5]<<eightpixelsbuffer[6]<<eightpixelsbuffer[7];
                     }
                     todisplayBMP.setPixelColor(i,j,colormap[eightpixelsbuffer.front()]);
                     eightpixelsbuffer.pop_front();
                 }
+            int kongguo = Targetinfo.width%32; //4位对齐
+            int yifenpei = kongguo/8;
+            int yizairu = kongguo%8;
+            if(yizairu==0) {
+                for(int i=4-yifenpei;i>0;i--){pixeldata.get();}
             }
+            else{
+                for(int i=3-yifenpei;i>0;i--){pixeldata.get();}
+            }
+        }
     }
     else{
         qDebug()<<"Unsupported BMP bits!";
@@ -166,7 +188,7 @@ int main(int argc, char *argv[])
         wtw[3]="图像高度："+numtostr(Targetinfo.height)+"Pixels";
         wtw[4]="图像位宽："+numtostr(Targetinfo.pixelbit);
         wtw[5]="图像压缩率："+numtostr(Targetinfo.compassrate);
-        wtw[6]="图像bi_size："+numtostr(Targetinfo.size);
+        wtw[6]="图像bi_size："+numtostr(Targetinfo.size)+"Bytes";
         wtw[7]="图像水平分辨率："+numtostr(Targetinfo.horizontalresolution)+"Pixels/metre";
         wtw[8]="图像垂直分辨率："+numtostr(Targetinfo.verticalresolution)+"Pixels/metre";
         wtw[9]="图像实际颜色索引："+numtostr(Targetinfo.acturalcolorindex);
