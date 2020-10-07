@@ -58,7 +58,7 @@ public:
         BMPDisplay->setCentralWidget(centralwidget);
         menubar = new QMenuBar(BMPDisplay);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 800, 21));
+        menubar->setGeometry(QRect(0, 0, 800, 25));
         menu = new QMenu(menubar);
         menu->setObjectName(QString::fromUtf8("menu"));
         menu_2 = new QMenu(menubar);
@@ -84,7 +84,10 @@ public:
     {
         BMPDisplay->setWindowTitle(QCoreApplication::translate("BMPDisplay", "BMPDisplay", nullptr));
         action_4->setText(QCoreApplication::translate("BMPDisplay", "\351\200\200\345\207\272", nullptr));
-        action->setText(QCoreApplication::translate("BMPDisplay", "\345\233\276\345\203\217\345\217\246\345\255\230\344\270\272", nullptr));
+        action->setText(QCoreApplication::translate("BMPDisplay", "\345\203\217\347\264\240\344\277\241\346\201\257\345\217\246\345\255\230\344\270\272", nullptr));
+#if QT_CONFIG(tooltip)
+        action->setToolTip(QCoreApplication::translate("BMPDisplay", "\345\203\217\347\264\240\344\277\241\346\201\257\345\217\246\345\255\230\344\270\272", nullptr));
+#endif // QT_CONFIG(tooltip)
         action_2->setText(QCoreApplication::translate("BMPDisplay", "\345\205\263\344\272\216", nullptr));
         menu->setTitle(QCoreApplication::translate("BMPDisplay", "\346\226\207\344\273\266", nullptr));
         menu_2->setTitle(QCoreApplication::translate("BMPDisplay", "\345\205\263\344\272\216", nullptr));

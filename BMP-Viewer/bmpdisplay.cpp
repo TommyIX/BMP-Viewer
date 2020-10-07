@@ -34,14 +34,22 @@ void BMPDisplay::on_action_4_triggered()
 
 void BMPDisplay::on_action_triggered()
 {
-    QString fileName = QFileDialog::getSaveFileName(this,tr("保存到指定位置"),"",tr("Bitmap Image (*.bmp)"));
-        if (!fileName.isNull())
+    QString fileName = QFileDialog::getSaveFileName(this,tr("保存到指定位置"),"",tr("Text File (*.txt)"));
+    if (!fileName.isNull())
         {
-            imagesource.save(fileName);
-            QMessageBox::information(NULL, "成功", "文件成功保存了");
+            std::ofstream out(fileName.toStdString());
+            out<<"#格式：(x,y)[R,G,B]\n";
+            for(int i=0;i<imagesource.height();i++){
+                for(int j=0;j<imagesource.width();j++){
+                    QColor pixelcolorhere = imagesource.pixelColor(i,j);
+                    out<<"("<<j<<","<<i<<"),["<<pixelcolorhere.red()<<","<<pixelcolorhere.green() << "," <<pixelcolorhere.blue()<<"]\n";
+                }
+            }
+            out.close();
+            QMessageBox::information(NULL, "成功", "文件成功保存");
         }
 }
 void BMPDisplay::on_action_2_triggered()
 {
-    QMessageBox::information(NULL,"关于本软件","图像处理作业 2020\n 王锦宏 19351125");
+    QMessageBox::about(NULL,"关于本软件","图像处理作业 2020\n 王锦宏 19351125");
 }

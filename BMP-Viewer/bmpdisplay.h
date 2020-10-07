@@ -2,6 +2,8 @@
 #define BMPDISPLAY_H
 
 #include <QMainWindow>
+#include <fstream>
+#include <iostream>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QPainter>

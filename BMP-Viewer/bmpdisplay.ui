@@ -36,7 +36,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -64,7 +64,10 @@
   </action>
   <action name="action">
    <property name="text">
-    <string>图像另存为</string>
+    <string>像素信息另存为</string>
+   </property>
+   <property name="toolTip">
+    <string>像素信息另存为</string>
    </property>
   </action>
   <action name="action_2">

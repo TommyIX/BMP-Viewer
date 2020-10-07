@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
                 colortemp.setAlpha(255);
                 todisplayBMP.setPixelColor(i,j,colortemp);
             }
-            if((Targetinfo.width*3)%4!=0){
+            if((Targetinfo.width*3)%4!=0){ //4位对齐
                 for(int k = (Targetinfo.width*3)%4;k>0;k--){pixeldata.get();}
             }
         }
