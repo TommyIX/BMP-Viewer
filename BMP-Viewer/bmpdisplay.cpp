@@ -46,10 +46,20 @@ void BMPDisplay::on_action_triggered()
                 }
             }
             out.close();
-            QMessageBox::information(NULL, "成功", "文件成功保存");
+            QMessageBox::information(NULL, "成功", "像素信息文件成功保存");
         }
 }
 void BMPDisplay::on_action_2_triggered()
 {
     QMessageBox::about(NULL,"关于本软件","图像处理作业 2020\n 王锦宏 19351125");
+}
+
+void BMPDisplay::on_action_3_triggered()
+{
+    QString fileName = QFileDialog::getSaveFileName(this,tr("保存到指定位置"),"",tr("Bitmap Image (*.bmp)"));
+            if (!fileName.isNull())
+            {
+                imagesource.save(fileName);
+                QMessageBox::information(NULL, "成功", "BMP文件成功保存");
+            }
 }

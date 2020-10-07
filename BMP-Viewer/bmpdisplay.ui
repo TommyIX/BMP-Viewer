@@ -26,8 +26,8 @@
    <string>BMPDisplay</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>bmp_128px_1171017_easyicon.net.ico</normaloff>bmp_128px_1171017_easyicon.net.ico</iconset>
+   <iconset resource="resource.qrc">
+    <normaloff>:/new/icon/bmp_128px_1171017_easyicon.net.ico</normaloff>:/new/icon/bmp_128px_1171017_easyicon.net.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget"/>
   <widget class="QMenuBar" name="menubar">
@@ -36,13 +36,14 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>25</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
     <property name="title">
      <string>文件</string>
     </property>
+    <addaction name="action_3"/>
     <addaction name="action"/>
     <addaction name="separator"/>
     <addaction name="action_4"/>
@@ -75,7 +76,14 @@
     <string>关于</string>
    </property>
   </action>
+  <action name="action_3">
+   <property name="text">
+    <string>图像另存为</string>
+   </property>
+  </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
  <connections/>
 </ui>

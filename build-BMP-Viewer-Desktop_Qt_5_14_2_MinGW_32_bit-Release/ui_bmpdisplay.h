@@ -27,6 +27,7 @@ public:
     QAction *action_4;
     QAction *action;
     QAction *action_2;
+    QAction *action_3;
     QWidget *centralwidget;
     QMenuBar *menubar;
     QMenu *menu;
@@ -45,7 +46,7 @@ public:
         BMPDisplay->setSizePolicy(sizePolicy);
         BMPDisplay->setMaximumSize(QSize(1024, 1024));
         QIcon icon;
-        icon.addFile(QString::fromUtf8("bmp_128px_1171017_easyicon.net.ico"), QSize(), QIcon::Normal, QIcon::Off);
+        icon.addFile(QString::fromUtf8(":/new/icon/bmp_128px_1171017_easyicon.net.ico"), QSize(), QIcon::Normal, QIcon::Off);
         BMPDisplay->setWindowIcon(icon);
         action_4 = new QAction(BMPDisplay);
         action_4->setObjectName(QString::fromUtf8("action_4"));
@@ -53,12 +54,14 @@ public:
         action->setObjectName(QString::fromUtf8("action"));
         action_2 = new QAction(BMPDisplay);
         action_2->setObjectName(QString::fromUtf8("action_2"));
+        action_3 = new QAction(BMPDisplay);
+        action_3->setObjectName(QString::fromUtf8("action_3"));
         centralwidget = new QWidget(BMPDisplay);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         BMPDisplay->setCentralWidget(centralwidget);
         menubar = new QMenuBar(BMPDisplay);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 800, 25));
+        menubar->setGeometry(QRect(0, 0, 800, 21));
         menu = new QMenu(menubar);
         menu->setObjectName(QString::fromUtf8("menu"));
         menu_2 = new QMenu(menubar);
@@ -70,6 +73,7 @@ public:
 
         menubar->addAction(menu->menuAction());
         menubar->addAction(menu_2->menuAction());
+        menu->addAction(action_3);
         menu->addAction(action);
         menu->addSeparator();
         menu->addAction(action_4);
@@ -89,6 +93,7 @@ public:
         action->setToolTip(QCoreApplication::translate("BMPDisplay", "\345\203\217\347\264\240\344\277\241\346\201\257\345\217\246\345\255\230\344\270\272", nullptr));
 #endif // QT_CONFIG(tooltip)
         action_2->setText(QCoreApplication::translate("BMPDisplay", "\345\205\263\344\272\216", nullptr));
+        action_3->setText(QCoreApplication::translate("BMPDisplay", "\345\233\276\345\203\217\345\217\246\345\255\230\344\270\272", nullptr));
         menu->setTitle(QCoreApplication::translate("BMPDisplay", "\346\226\207\344\273\266", nullptr));
         menu_2->setTitle(QCoreApplication::translate("BMPDisplay", "\345\205\263\344\272\216", nullptr));
     } // retranslateUi

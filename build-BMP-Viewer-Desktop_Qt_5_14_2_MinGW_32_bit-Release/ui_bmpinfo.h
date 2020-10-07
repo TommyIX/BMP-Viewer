@@ -32,7 +32,7 @@ public:
         bmpinfo->setMinimumSize(QSize(400, 527));
         bmpinfo->setMaximumSize(QSize(1000, 1000));
         QIcon icon;
-        icon.addFile(QString::fromUtf8("bmp_128px_1171017_easyicon.net.ico"), QSize(), QIcon::Normal, QIcon::Off);
+        icon.addFile(QString::fromUtf8(":/new/icon/bmp_128px_1171017_easyicon.net.ico"), QSize(), QIcon::Normal, QIcon::Off);
         bmpinfo->setWindowIcon(icon);
         listView = new QListView(bmpinfo);
         listView->setObjectName(QString::fromUtf8("listView"));

@@ -26,8 +26,8 @@
    <string>Fileinfo</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>bmp_128px_1171017_easyicon.net.ico</normaloff>bmp_128px_1171017_easyicon.net.ico</iconset>
+   <iconset resource="resource.qrc">
+    <normaloff>:/new/icon/bmp_128px_1171017_easyicon.net.ico</normaloff>:/new/icon/bmp_128px_1171017_easyicon.net.ico</iconset>
   </property>
   <widget class="QListView" name="listView">
    <property name="geometry">
@@ -70,6 +70,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
  <connections/>
 </ui>
